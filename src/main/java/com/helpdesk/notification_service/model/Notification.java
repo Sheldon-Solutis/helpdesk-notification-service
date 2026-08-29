@@ -1,5 +1,7 @@
 package com.helpdesk.notification_service.model;
 
+import com.helpdesk.notification_service.dto.TicketCreatedEvent;
+import com.helpdesk.notification_service.enums.Status;
 import com.helpdesk.notification_service.enums.Type;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,17 +35,26 @@ public class Notification {
     @Column(nullable = false)
     private Type type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "old_ticket_status")
-    private String oldTicketStatus;
+    private Status oldTicketStatus;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "new_ticket_status", nullable = false)
-    private String newTicketStatus;
+    private Status newTicketStatus;
 
     @Column(name = "ticket_created_at", nullable = false)
     private LocalDateTime ticketCreatedAt;
 
     @Column(name = "notification_date_time", nullable = false)
     private LocalDateTime notificationDateTime;
+
+    public Notification(TicketCreatedEvent ticket) {
+        this.ticketId = ticket.ticketId();
+        this.technicianId = ticket.technicianId();
+        this.newTicketStatus = Status.OPEN;
+        this.ticketCreatedAt = ticket.createdAt();
+    }
 
     @PrePersist
     public void prePersist() {
