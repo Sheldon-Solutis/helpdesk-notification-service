@@ -19,12 +19,14 @@ public class NotificationConsumer {
     @RabbitListener(queues = "ticket.queue")
     public void receiveTicket(TicketCreatedEvent ticket) {
         Notification notification = new Notification(ticket);
+
         notification.setType(Type.TICKET_CREATED);
+
         notification.setMessage("Ticket with id: "
                 + ticket.ticketId() +
                 ", Created Successfully, in date: "
                 + ticket.createdAt().format(
-                        DateTimeFormatter.ofPattern("dd/MM/AAAA")));
+                        DateTimeFormatter.ofPattern("dd/MM/yyyy")));
 
         notificationRepository.save(notification);
     }
