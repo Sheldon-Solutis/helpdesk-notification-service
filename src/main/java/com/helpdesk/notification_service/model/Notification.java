@@ -1,6 +1,6 @@
 package com.helpdesk.notification_service.model;
 
-import com.helpdesk.notification_service.dto.TicketCreatedEvent;
+import com.helpdesk.notification_service.messaging.event.TicketCreatedEvent;
 import com.helpdesk.notification_service.enums.Status;
 import com.helpdesk.notification_service.enums.Type;
 import jakarta.persistence.*;

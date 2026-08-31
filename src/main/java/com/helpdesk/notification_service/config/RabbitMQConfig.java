@@ -1,4 +1,4 @@
-package com.helpdesk.notification_service.config.rabbitmq;
+package com.helpdesk.notification_service.config;
 
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;

@@ -1,4 +1,4 @@
-package com.helpdesk.notification_service.dto;
+package com.helpdesk.notification_service.messaging.event;
 
 import java.time.LocalDateTime;
 

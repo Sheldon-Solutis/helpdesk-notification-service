@@ -1,6 +1,9 @@
 package com.helpdesk.notification_service.service;
 
 import com.helpdesk.notification_service.dto.NotificationDto;
+import com.helpdesk.notification_service.messaging.event.TicketAssignedEvent;
+import com.helpdesk.notification_service.messaging.event.TicketCreatedEvent;
+import com.helpdesk.notification_service.messaging.event.TicketStatusChangedEvent;
 import com.helpdesk.notification_service.model.Notification;
 import com.helpdesk.notification_service.repository.NotificationRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,6 +14,7 @@ import java.util.List;
 
 @Service
 public class NotificationService {
+
     @Autowired
     private NotificationRepository notificationRepository;
 
@@ -28,6 +32,19 @@ public class NotificationService {
                         .orElseThrow(() ->
                                 new EntityNotFoundException(
                                         "Ticket Not Found With Id: " + id)));
+    }
+
+    public void handleTicketAssigned(TicketAssignedEvent event) {
+        new NotificationDto(event);
+        notificationRepository.save(event);
+    }
+
+    public void handleTicketCreated(TicketCreatedEvent event) {
+
+    }
+
+    public void handleTicketStatusChanged(TicketStatusChangedEvent event) {
+
     }
 
 }

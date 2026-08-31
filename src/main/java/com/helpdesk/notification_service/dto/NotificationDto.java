@@ -1,6 +1,7 @@
 package com.helpdesk.notification_service.dto;
 
 import com.helpdesk.notification_service.enums.Status;
+import com.helpdesk.notification_service.messaging.event.TicketAssignedEvent;
 import com.helpdesk.notification_service.model.Notification;
 import lombok.*;
 
@@ -21,5 +22,11 @@ public class NotificationDto {
         this.technicianId = notification.getTechnicianId();
         this.message = notification.getMessage();
         this.newTicketStatus = notification.getNewTicketStatus();
+    }
+
+    public NotificationDto(TicketAssignedEvent event) {
+        this.ticketId = event.ticketId();
+        this.technicianId = event.technicianId();
+        this.newTicketStatus = Status.OPEN;
     }
 }
