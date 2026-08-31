@@ -3,6 +3,7 @@ package com.helpdesk.notification_service.service;
 import com.helpdesk.notification_service.dto.NotificationDto;
 import com.helpdesk.notification_service.messaging.event.TicketAssignedEvent;
 import com.helpdesk.notification_service.messaging.event.TicketCreatedEvent;
+import com.helpdesk.notification_service.messaging.event.TicketDeletedEvent;
 import com.helpdesk.notification_service.messaging.event.TicketStatusChangedEvent;
 import com.helpdesk.notification_service.model.Notification;
 import com.helpdesk.notification_service.repository.NotificationRepository;
@@ -35,16 +36,23 @@ public class NotificationService {
     }
 
     public void handleTicketAssigned(TicketAssignedEvent event) {
-        new NotificationDto(event);
-        notificationRepository.save(event);
+        Notification notification = new Notification(new NotificationDto(event));
+
+        notification.setMessage("Ticket with id: " + notification.getTicketId() +
+                " has been assigned by technician id: " + notification.getNotificationId());
+
+        notificationRepository.save(notification);
     }
 
     public void handleTicketCreated(TicketCreatedEvent event) {
-
+        Notification notification = new Notification(new NotificationDto(event));
+        notificationRepository.save(notification);
     }
 
     public void handleTicketStatusChanged(TicketStatusChangedEvent event) {
 
     }
 
+    public void handleTicketDeleted(TicketDeletedEvent event) {
+    }
 }

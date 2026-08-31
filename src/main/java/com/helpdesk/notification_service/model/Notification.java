@@ -1,5 +1,6 @@
 package com.helpdesk.notification_service.model;
 
+import com.helpdesk.notification_service.dto.NotificationDto;
 import com.helpdesk.notification_service.messaging.event.TicketCreatedEvent;
 import com.helpdesk.notification_service.enums.Status;
 import com.helpdesk.notification_service.enums.Type;
@@ -54,6 +55,14 @@ public class Notification {
         this.technicianId = ticket.technicianId();
         this.newTicketStatus = Status.OPEN;
         this.ticketCreatedAt = ticket.createdAt();
+    }
+
+    public Notification(NotificationDto dto) {
+        this.ticketId = dto.getTicketId();
+        this.technicianId = dto.getTechnicianId();
+        this.message = dto.getMessage();
+        this.newTicketStatus = dto.getNewTicketStatus();
+        this.notificationDateTime = LocalDateTime.now();
     }
 
     @PrePersist

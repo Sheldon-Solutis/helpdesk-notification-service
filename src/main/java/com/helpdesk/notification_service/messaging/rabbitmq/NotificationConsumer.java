@@ -1,17 +1,18 @@
 package com.helpdesk.notification_service.messaging.rabbitmq;
 
-import com.helpdesk.notification_service.messaging.event.TicketAssignedEvent;
-import com.helpdesk.notification_service.messaging.event.TicketCreatedEvent;
-import com.helpdesk.notification_service.messaging.event.TicketStatusChangedEvent;
+import com.helpdesk.notification_service.config.RabbitMQConfig;
+import com.helpdesk.notification_service.messaging.event.*;
 import com.helpdesk.notification_service.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 
 @Component
 @RequiredArgsConstructor
+@RabbitListener(queues = RabbitMQConfig.TICKET_QUEUE)
 public class NotificationConsumer {
 
     private final NotificationService notificationService;
@@ -31,4 +32,8 @@ public class NotificationConsumer {
         notificationService.handleTicketStatusChanged(event);
     }
 
+    @RabbitHandler
+    public void handle(TicketDeletedEvent event) {
+        notificationService.handleTicketDeleted(event);
+    }
 }
