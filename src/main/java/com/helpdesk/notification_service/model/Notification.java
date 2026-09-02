@@ -40,11 +40,14 @@ public class Notification {
     @Column(name = "old_ticket_status")
     private Status oldTicketStatus;
 
+    // TicketDeletedEvent não carrega status, então esse campo passou a
+    // aceitar null (era nullable = false, quebrava a notificação de
+    // exclusão de chamado).
     @Enumerated(EnumType.STRING)
-    @Column(name = "new_ticket_status", nullable = false)
+    @Column(name = "new_ticket_status")
     private Status newTicketStatus;
 
-    @Column(name = "ticket_created_at", nullable = false)
+    @Column(name = "ticket_created_at")
     private LocalDateTime ticketCreatedAt;
 
     @Column(name = "notification_date_time", nullable = false)
@@ -61,6 +64,8 @@ public class Notification {
         this.ticketId = dto.getTicketId();
         this.technicianId = dto.getTechnicianId();
         this.message = dto.getMessage();
+        this.type = dto.getType();
+        this.oldTicketStatus = dto.getOldTicketStatus();
         this.newTicketStatus = dto.getNewTicketStatus();
         this.notificationDateTime = LocalDateTime.now();
     }

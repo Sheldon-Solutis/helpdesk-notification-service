@@ -8,8 +8,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import java.time.format.DateTimeFormatter;
-
 @Component
 @RequiredArgsConstructor
 @RabbitListener(queues = RabbitMQConfig.TICKET_QUEUE)

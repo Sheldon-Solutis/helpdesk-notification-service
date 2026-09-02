@@ -8,16 +8,16 @@ import com.helpdesk.notification_service.messaging.event.TicketStatusChangedEven
 import com.helpdesk.notification_service.model.Notification;
 import com.helpdesk.notification_service.repository.NotificationRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationService {
 
-    @Autowired
-    private NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
     public List<NotificationDto> listAll(){
         return notificationRepository.findAll()
@@ -37,10 +37,6 @@ public class NotificationService {
 
     public void handleTicketAssigned(TicketAssignedEvent event) {
         Notification notification = new Notification(new NotificationDto(event));
-
-        notification.setMessage("Ticket with id: " + notification.getTicketId() +
-                " has been assigned by technician id: " + notification.getNotificationId());
-
         notificationRepository.save(notification);
     }
 
@@ -49,10 +45,17 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
+    // Handler estava vazio (nada era persistido pra esse evento).
     public void handleTicketStatusChanged(TicketStatusChangedEvent event) {
-
+        Notification notification = new Notification(new NotificationDto(event));
+        notificationRepository.save(notification);
     }
 
+    // Idem: handler vazio. Precisou de Type.TICKET_DELETED (adicionado ao
+    // enum) e de newTicketStatus deixar de ser nullable=false, já que um
+    // TicketDeletedEvent não carrega status.
     public void handleTicketDeleted(TicketDeletedEvent event) {
+        Notification notification = new Notification(new NotificationDto(event));
+        notificationRepository.save(notification);
     }
 }
